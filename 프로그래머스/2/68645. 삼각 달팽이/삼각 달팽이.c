@@ -1,24 +1,36 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
+import java.util.*;
 
-int* solution(int n) {
-    // return 값은 malloc 등 동적 할당을 사용해주세요. 할당 길이는 상황에 맞게 변경해주세요.
-    int* answer = (int*)calloc(n * (n+1) / 2, sizeof(int));
-    int state = 0, index = 0, count = 1;
+class Solution {
+    public int[] solution(int n) {
+        int[] answer = new int[(n*(n+1))/2];
+        int[][] matrix = new int[n][n];
 
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n - i; j++) {
-            if(state%3 == 0) {
-                index = index - state/3 + i + j;
-            } else if (state%3 == 1){
-                index++;
-            } else {
-                index = index - n + state/3 + j;
+        int x = -1, y = 0;
+        int num = 1;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) { 	
+                if (i % 3 == 0) {
+                    x++;
+                } else if (i % 3 == 1) {
+                    y++;
+                } else if (i % 3 == 2) {
+                    x--;
+                    y--;
+                }
+                matrix[x][y] = num++;
             }
-            answer[index] = count++;
         }
-        state++;
+        
+        int k = 0;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(matrix[i][j] == 0) 
+                	break;
+                answer[k++] = matrix[i][j];
+            }
+        }
+
+        return answer;
     }
-    return answer;
 }
